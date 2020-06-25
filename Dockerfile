@@ -1,4 +1,4 @@
-FROM node:10-alpine
+FROM node:12.18-alpine
 
 RUN npm cache clean --force && \
 	npm config set strict-ssl false && \
