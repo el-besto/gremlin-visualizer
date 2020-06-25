@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const gremlin = require('gremlin');
 const cors = require('cors');
 const app = express();
-const port = 3001;
+const port = 5000;
 
 app.use(cors({
   credentials: true,
