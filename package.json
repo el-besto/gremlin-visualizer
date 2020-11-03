@@ -26,6 +26,7 @@
   "scripts": {
     "client": "react-scripts start",
     "server": "node proxy-server.js",
+    "server:debug": "node --inspect=9229 proxy-server.js",
     "start": "npm run server",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
