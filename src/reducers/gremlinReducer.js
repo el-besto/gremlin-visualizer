@@ -1,9 +1,12 @@
 import { ACTIONS } from '../constants';
+const GREMLIN_HOST = process.env.GREMLIN_HOST || 'localhost';
+const GREMLIN_PORT = +(process.env.GREMLIN_PORT || '8182');
+const GREMLINVIZ_QUERY = process.env.GREMLINVIZ_QUERY || 'g.V()';
 
 const initialState = {
-  host: 'gremlin-server',
-  port: '8182',
-  query: 'g.V()',
+  host: GREMLIN_HOST,
+  port: GREMLIN_PORT,
+  query: GREMLINVIZ_QUERY,
   error: null
 };
 

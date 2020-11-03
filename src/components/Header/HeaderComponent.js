@@ -18,9 +18,16 @@ class Header extends React.Component {
       { host: this.props.host, port: this.props.port, query: this.props.query, nodeLimit: this.props.nodeLimit },
       { headers: { 'Content-Type': 'application/json' } }
     ).then((response) => {
+      // Here is handler of initital response
+      console.info('ANGELO: response: ', response);
       onFetchQuery(response, this.props.query, this.props.nodeLabels, this.props.dispatch);
     }).catch((error) => {
-      this.props.dispatch({ type: ACTIONS.SET_ERROR, payload: COMMON_GREMLIN_ERROR });
+
+      if ( error?.response?.data ) {
+        this.props.dispatch({ type: ACTIONS.SET_ERROR, payload: error.response.data.message });
+      } else {
+        this.props.dispatch({ type: ACTIONS.SET_ERROR, payload: COMMON_GREMLIN_ERROR });
+      }
     });
   }
 
@@ -36,6 +43,26 @@ class Header extends React.Component {
     this.props.dispatch({ type: ACTIONS.SET_QUERY, payload: query });
   }
 
+  sendQueryRaw() {
+    this.props.dispatch({ type: ACTIONS.SET_ERROR, payload: null });
+    axios.post(
+      QUERY_ENDPOINT,
+      { host: this.props.host, port: this.props.port, query: this.props.query, nodeLimit: this.props.nodeLimit },
+      { headers: { 'Content-Type': 'application/json' } }
+    ).then((response) => {
+      // Here is handler of initital response
+      console.info('[sendQueryRaw] response: ', response);
+      onFetchQuery(response, this.props.query, this.props.nodeLabels, this.props.dispatch);
+    }).catch((error) => {
+
+      if ( error?.response?.data ) {
+        this.props.dispatch({ type: ACTIONS.SET_ERROR, payload: error.response.data.message });
+      } else {
+        this.props.dispatch({ type: ACTIONS.SET_ERROR, payload: COMMON_GREMLIN_ERROR });
+      }
+    });
+  }
+
   render(){
     return (
       <div className={'header'}>
@@ -44,11 +71,13 @@ class Header extends React.Component {
           <TextField value={this.props.port} onChange={(event => this.onPortChanged(event.target.value))} id="standard-basic" label="port" style={{width: '10%'}} />
           <TextField value={this.props.query} onChange={(event => this.onQueryChanged(event.target.value))} id="standard-basic" label="gremlin query" style={{width: '60%'}} />
           <Button variant="contained" color="primary" onClick={this.sendQuery.bind(this)} style={{width: '150px'}} >Execute</Button>
+          <Button variant="contained" color="primary" onClick={this.sendQueryRaw.bind(this)} style={{width: '150px'}} >RAW</Button>
           <Button variant="outlined" color="secondary" onClick={this.clearGraph.bind(this)} style={{width: '150px'}} >Clear Graph</Button>
         </form>
 
         <br />
         <div style={{color: 'red'}}>{this.props.error}</div>
+        <div style={{color: 'red'}}>{this.props.rawQueryResult}</div>
       </div>
 
     );
@@ -64,6 +93,7 @@ export const HeaderComponent = connect((state)=>{
     nodes: state.graph.nodes,
     edges: state.graph.edges,
     nodeLabels: state.options.nodeLabels,
-    nodeLimit: state.options.nodeLimit
+    nodeLimit: state.options.nodeLimit,
+    rawQueryResult: state.gremlin.rawResult,
   };
 })(Header);

@@ -11,8 +11,10 @@
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "express-pino-logger": "^5.0.0",
     "gremlin": "^3.4.7",
     "lodash": "^4.17.15",
+    "pino": "^6.3.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-json-to-table": "^0.1.5",
@@ -22,10 +24,11 @@
     "redux-logger": "^3.0.6",
     "vis-network": "^6.5.2"
   },
-  "proxy": "http://localhost:3001",
+  "proxy": "http://localhost:5000",
   "scripts": {
     "client": "react-scripts start",
     "server": "node proxy-server.js",
+    "server:debug": "node --inspect=9229 proxy-server.js",
     "start": "npm run server",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
