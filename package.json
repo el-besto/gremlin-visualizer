@@ -22,7 +22,7 @@
     "redux-logger": "^3.0.6",
     "vis-network": "^6.5.2"
   },
-  "proxy": "http://localhost:3001",
+  "proxy": "http://localhost:5000",
   "scripts": {
     "client": "react-scripts start",
     "server": "node proxy-server.js",
